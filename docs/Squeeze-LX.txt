@@ -1,0 +1,63 @@
+﻿
+# Windows 11 离线安装 Squeezelite 客户端指南 (Squeeze-LX)
+
+## 背景与痛点
+在局域网内搭建了 **Lyrion Music Server (LMS)**（如运行在 DietPi/树莓派上）后，我们需要在 Windows 11 电脑上安装一个音频播放端（Squeezelite）。
+
+然而，Windows 11 的本地微软商店中往往搜不到官方推荐的图形化客户端 **Squeeze-LX**（原 Squeezelite-X）。在需要离线安装或不想折腾繁琐依赖的情况下，如何优雅地在 Windows 11 上完成部署并直通 DAC？
+
+以下是实测可行的完整流程。
+
+---
+
+## 安装步骤
+
+### 1. 获取客户端（绕过本地商店）
+因为本地市场没有该应用，且需要离线方案，我们通过修改系统区域来获取：
+
+1. 打开 Windows 11 **设置 > 时间和语言 > 语言和区域**。
+2. 将“国家或地区”切换为 **美国 (United States)**。
+3. 重启电脑。
+4. 打开 **Microsoft Store**，搜索 **`Squeeze-LX`**（注意：商店里不叫 Squeezelite-X，搜 Squeeze-LX 才能找到）。
+5. 点击安装并等待完成。
+6. *(可选)* 安装完成后，你可以把系统区域改回原样，不影响应用运行。
+
+> **备选方案**：如果商店方案彻底失效，可以去 SourceForge 的 `lmsclients` 项目下载官方命令行版 `squeezelite-win64.zip`，解压后通过命令行或批处理运行。
+
+### 2. 自动发现服务器
+打开 Squeeze-LX 后，只要你的电脑和 LMS 服务器在同一个局域网内，软件会通过 **UDP 广播** 自动发现服务器。
+在设置界面的 `Lyrion Music Server` 区域，`Host / Library` 会自动填入你服务器的名称（例如本例中的 `DietPi`）。
+
+### 3. 音频输出设置（核心：选择 WASAPI）
+这是决定音质和数据传输质量的关键一步。在 `Player Output Device` 下拉菜单中，你会看到你的 DAC 设备，通常有 `[MME]` 和 `[Windows WASAPI]` 等选项：
+
+*   **不要选 `[MME]`**：这是 Windows 最老的基础驱动接口，兼容性好但非音质首选。
+*   **选择 `[Windows WASAPI]`**：本例中选择了 `扬声器 (3- SMSL USB DAC) [Windows WASAPI]`。WASAPI 可以绕过 Windows 系统混音器，把音频数据更直接地送给 DAC，避免系统对声音做多余的加工。
+
+### 4. 推荐配置（省心后台化）
+在 `Application` 选项卡中，建议进行以下设置：
+
+*   ✅ **Auto start on log in**：开机自启，省去每次手动打开的麻烦。
+*   ✅ **Run in background**：点击关闭按钮时，程序缩到系统托盘继续播放，不中断音乐。
+*   ✅ **Start minimized**：开机启动时不弹窗，直接静默在托盘待命。
+
+*(如果你在高级选项 `Advanced / Debug` 中，发现屏幕总是自动熄灭影响听歌，可以打开 `Prevent monitor sleep` 防止系统休眠。)*
+
+设置完成后，点击 **Apply** 保存。
+
+---
+
+## 最终效果
+此时整个系统形成闭环：
+1. **DietPi (LMS)** 负责统一管理曲库、专辑封面和播放列表。
+2. **Squeeze-LX** 作为极轻量的瘦客户端，在后台静默运行。
+3. 通过 **WASAPI** 独占模式将无损音频 bit-perfect 直通给 **SMSL USB DAC**。
+4. 日常选歌控制，只需在手机或平板的浏览器中打开 LMS 的 Web 界面即可。
+
+相比于使用 Foobar2000 这类本地播放器，这种“服务器-客户端”架构在多房间同步、统一库管理上省心得多，非常适合家庭音乐服务器场景。
+
+---
+
+## 踩坑记录
+*   **商店搜不到应用**：国内区域或部分网络环境下搜不到，需切换美区并搜索 `Squeeze-LX`。
+*   **输出设备如何选**：DAC 后面如果跟着 `[MME]`，说明走的是老驱动。一定要尝试切换到 `[Windows WASAPI]` 以获得纯净的音频直通体验。
