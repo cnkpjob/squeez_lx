@@ -53,6 +53,10 @@ Windows 11 本地 Microsoft Store 往往搜不到官方推荐的图形化客户�
 
 若在 `Advanced / Debug` 中发现屏幕总是自动熄灭影响听歌，可打开 `Prevent monitor sleep` 防止系统休眠。设置完成后点击 **Apply** 保存。
 
+**设置界面参考**：`Host / Library` 自动发现为 `DietPi`，`Player Output Device` 已选 `[Windows WASAPI]`，左侧三项后台化开关均已开启。
+
+![Squeeze-LX 设置界面](docs/images/settings-wasapi.png)
+
 ---
 
 ## 最终效果
@@ -61,6 +65,10 @@ Windows 11 本地 Microsoft Store 往往搜不到官方推荐的图形化客户�
 2. **Squeeze-LX** 作为极轻量的瘦客户端，在后台静默运行。
 3. 通过 **WASAPI** 将无损音频 bit-perfect 直通给 **SMSL USB DAC**。
 4. 日常选歌控制在手机或平板浏览器打开 LMS 的 Web 界面即可。
+
+**客户端主界面**：曲库封面、专辑列表与底部播放条。
+
+![Squeeze-LX 曲库首页](docs/images/library-home.png)
 
 相比 Foobar2000 这类本地播放器，这种「服务器-客户端」架构在多房间同步、统一曲库管理上省心得多，适合家庭音乐服务器场景。
 
