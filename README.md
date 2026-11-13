@@ -85,6 +85,19 @@ Windows 11 本地 Microsoft Store 往往搜不到官方推荐的图形化客户�
 
 ## 发行版与辅助脚本
 
-首个发行版 **v1.0.0** 附带引导脚本 [`scripts/Run-SqueezeLX.ps1`](scripts/Run-SqueezeLX.ps1)：临时将执行策略设为 `Bypass`，再调用同目录下的 `Install-SqueezeLX.ps1`。
+首个发行版 **v1.0.0** 提供两个配套脚本（需放在同一目录）：
 
-> ⚠️ 该引导脚本本身不含安装逻辑，运行时同目录必须存在 `Install-SqueezeLX.ps1`。本仓库目前**未包含**该主脚本，单独下载引导脚本运行会提示找不到文件；请与自己的主安装脚本放在同一目录后使用。
+| 脚本 | 作用 |
+| --- | --- |
+| [`scripts/Install-SqueezeLX.ps1`](scripts/Install-SqueezeLX.ps1) | **正式安装脚本**：以管理员权限通过 `winget` 从 Microsoft Store 源安装 Squeeze-LX，并添加防火墙规则放行 LMS 发现与 Web 端口（UDP 3483、TCP 9000 / 9090）。 |
+| [`scripts/Run-SqueezeLX.ps1`](scripts/Run-SqueezeLX.ps1) | **引导脚本**：临时将执行策略设为 `Bypass`，再调用同目录的 `Install-SqueezeLX.ps1`。 |
+
+以管理员身份打开 PowerShell，进入 `scripts/` 目录执行：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\Run-SqueezeLX.ps1
+```
+
+安装完成后仍需手动把 `Player Output Device` 选为 `[Windows WASAPI]`，并勾选 `Auto start on log in`、`Run in background`、`Start minimized`（见上文「推荐配置」）。
+
+> 脚本要求管理员权限；`winget` 的 `msstore` 源仍可能受 Microsoft 账户与区域限制，失败时可回退到上文的美区商店或 SourceForge 方案。
