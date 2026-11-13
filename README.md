@@ -80,3 +80,11 @@ Windows 11 本地 Microsoft Store 往往搜不到官方推荐的图形化客户�
 | --- | --- | --- |
 | 商店搜不到应用 | 国内区域或部分网络环境下不上架 | 切换美区并搜索 `Squeeze-LX` |
 | DAC 后面跟着 `[MME]` | 走的是老驱动接口，非音质首选 | 切换到 `[Windows WASAPI]` 获得纯净直通 |
+
+---
+
+## 发行版与辅助脚本
+
+首个发行版 **v1.0.0** 附带引导脚本 [`scripts/Run-SqueezeLX.ps1`](scripts/Run-SqueezeLX.ps1)：临时将执行策略设为 `Bypass`，再调用同目录下的 `Install-SqueezeLX.ps1`。
+
+> ⚠️ 该引导脚本本身不含安装逻辑，运行时同目录必须存在 `Install-SqueezeLX.ps1`。本仓库目前**未包含**该主脚本，单独下载引导脚本运行会提示找不到文件；请与自己的主安装脚本放在同一目录后使用。
